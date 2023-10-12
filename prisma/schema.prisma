@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  discordId String
+  username  String     @unique
+  guilds    String[]
+  role      Role       @default(REGULAR)
+  playlist  Playlist[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Song      Song[]
+}
+
+model Playlist {
+  id     Int     @id @default(autoincrement())
+  about  String?
+  userId Int
+  author User    @relation(fields: [userId], references: [id])
+  //song   Song[]
+}
+
+model Genre {
+  id        Int      @id @default(autoincrement())
+  //song      Song[]
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Song {
+  id         Int      @id @default(autoincrement())
+  //title      String
+  //genre      Genre[]
+  //year       Int
+  secure_url String
+  public_id  String
+  userId     Int
+  artist     User     @relation(fields: [userId], references: [id])
+  //playlist   Playlist[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model session {
+  sid    String   @id @map("sid") @db.VarChar
+  sess   Json     @map("sess") @db.Json
+  expire DateTime @map("expire") @db.Timestamp
+
+  @@index([expire], name: "IDX_session_expire")
+}
+
+enum Role {
+  REGULAR
+  MODERATOR
+  ADMIN
+}

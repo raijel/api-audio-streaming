@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const authValidator_middleware_1 = require("../middlewares/authValidator.middleware");
+const audio_controller_1 = require("../controllers/audio.controller");
+const fileUpload_middleware_1 = require("../middlewares/fileUpload.middleware");
+const router = (0, express_1.Router)();
+router.get("/song/:songId", authValidator_middleware_1.authRequire, audio_controller_1.getAudio);
+router.post("/upload", fileUpload_middleware_1.fileUploadMiddleware, authValidator_middleware_1.authRequire, audio_controller_1.uploadAudio);
+router.put("/update/songId", authValidator_middleware_1.authRequire);
+router.delete("/delete/songId", authValidator_middleware_1.authRequire);
+exports.default = router;
