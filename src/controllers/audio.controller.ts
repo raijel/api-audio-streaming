@@ -20,15 +20,18 @@ export const getAudio = async (req: Request, res: Response) => {
 
 export const uploadAudio = async (req: Request, res: Response) => {
   try {
-    if (req.files?.audio) {
+    const { title, year } = req.body;
+    if (req.files?.audio && req.user) {
       //@ts-ignore
       const result = await uploadFile(req.files.audio.tempFilePath);
 
       const audioCreated = await prisma.song.create({
         data: {
+          title,
+          year,
           secure_url: result.secure_url,
           public_id: result.public_id,
-          userId: 1,
+          userId: req.user.id,
         },
       });
       //@ts-ignore

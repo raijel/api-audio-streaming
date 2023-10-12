@@ -2,18 +2,17 @@
 
 - CRUD system.
 - Audio stream with Cloudinary service.
-- Passport-discord login.
+- Passport-discord integration.
 - Roles.
+- Schema validators with zod.
 - Sessions on server side.
 - Everything is modularized for re-use in other projects.
 - Prisma ORM
 - PostgreSQL.
-- Redis as cache db
-- Project dockerized.
 
 ### Status Development:
 
-- 50%
+- 70%
 
 ## More details:
 
@@ -36,11 +35,6 @@
 
 - songs are agrouped by genres.
 
-### Suscriptions:
-
-- users can subscribe to authors.
-- users can get all their suscriptions
-
 ### Likes:
 
 - users can use a like button.
@@ -54,31 +48,25 @@
 
 1.  Type `npm i ` in root path to get all dependencies from package.json. you can also dockerize it using `docker compose up`
 
-2.  Create a cluster in your [MongoDB Atlas](https://www.mongodb.com/atlas/database) project.
-
 3.  Create an account in [Cloudinary](https://cloudinary.com/) service.
 
 4.  Enviroments variables:
 
-    create a .env file in the root path and inside define 9 variables:
+    create a .env file in the root path and inside define these variables:
 
-        DOCKER_PORT = docker port backend server.
         LOCAL_PORT = local port backend server.
-        DATABASE_URL = your mongodb atlas connection string(remember replace your password user inside of this string)
-        SECRET_KEY = secret key token for JWT middleware.
+        DATABASE_URL = PostgreSQL url
+        DISCORD_CLIENT_ID = from discord developer portal
+        DISCORD_CLIENT_SECRET = from discord developer portal
+        SECRET_KEY = from discord developer portal.
         CLOUD_NAME = from your cloudinary account.
         API_KEY = from your cloudinary account.
         API_SECRET = from your cloudinary account.
-        REDIS_HOST = db name
-        REDIS_DOCKER_PORT = redis port 6379 as default.
-        REDIS_LOCAL_PORT = redis local port
-        REDIS_PASSWORD = create a new one here
 
 5.  Type `npm run dev` in root path or if you use docker, just run the container.
 
 note:
-endpoints were tested with [Thunder Client VSC](https://www.thunderclient.com/) extension
-tests done with jest and supertest
+I used [Thunder Client VSC](https://www.thunderclient.com/) extension as client.
 
 ## Find a bug?
 

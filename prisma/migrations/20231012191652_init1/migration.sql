@@ -1,11 +1,13 @@
+-- CreateEnum
+CREATE TYPE "Role" AS ENUM ('REGULAR', 'MODERATOR', 'ADMIN');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
     "discordId" TEXT NOT NULL,
     "username" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
     "guilds" TEXT[],
-    "role" TEXT NOT NULL DEFAULT 'REGULAR',
+    "role" "Role" NOT NULL DEFAULT 'REGULAR',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -35,12 +37,23 @@ CREATE TABLE "Genre" (
 CREATE TABLE "Song" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
-    "url" TEXT NOT NULL,
+    "year" INTEGER NOT NULL,
+    "secure_url" TEXT NOT NULL,
+    "public_id" TEXT NOT NULL,
     "userId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Song_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "session" (
+    "sid" VARCHAR NOT NULL,
+    "sess" JSON NOT NULL,
+    "expire" TIMESTAMP NOT NULL,
+
+    CONSTRAINT "session_pkey" PRIMARY KEY ("sid")
 );
 
 -- CreateTable
@@ -57,6 +70,9 @@ CREATE TABLE "_GenreToSong" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
+
+-- CreateIndex
+CREATE INDEX "IDX_session_expire" ON "session"("expire");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_PlaylistToSong_AB_unique" ON "_PlaylistToSong"("A", "B");
