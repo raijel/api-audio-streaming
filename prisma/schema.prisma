@@ -8,46 +8,48 @@ datasource db {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  discordId String
-  username  String     @unique
-  guilds    String[]
-  role      Role       @default(REGULAR)
-  playlist  Playlist[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  Song      Song[]
+  id          Int           @id @default(autoincrement())
+  discordId   String
+  username    String        @unique
+  guilds      String[]
+  role        Role          @default(REGULAR)
+  Video       Video[]
+  ratings     Rating[]
+  suscribed   Boolean       @default(false)
+  suscription Suscription[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 }
 
-model Playlist {
-  id     Int     @id @default(autoincrement())
-  about  String?
-  userId Int
-  author User    @relation(fields: [userId], references: [id])
-  song   Song[]
+model Video {
+  id         Int        @id @default(autoincrement())
+  title      String
+  category   Category[]
+  year       Int
+  rating     Rating[]
+  secure_url String
+  public_id  String
+  userId     Int
+  author     User       @relation(fields: [userId], references: [id])
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 }
 
-model Genre {
+model Category {
   id        Int      @id @default(autoincrement())
-  song      Song[]
+  video     Video[]
   title     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Song {
-  id         Int        @id @default(autoincrement())
-  title      String
-  genre      Genre[]
-  year       Int
-  likes      Int
-  secure_url String
-  public_id  String
-  userId     Int
-  artist     User       @relation(fields: [userId], references: [id])
-  playlist   Playlist[]
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+model Rating {
+  id      Int   @id @default(autoincrement())
+  points  Int   @default(0)
+  videoId Int
+  video   Video @relation(fields: [videoId], references: [id])
+  userId  Int
+  user    User  @relation(fields: [userId], references: [id])
 }
 
 model session {
@@ -56,6 +58,15 @@ model session {
   expire DateTime @map("expire") @db.Timestamp
 
   @@index([expire], name: "IDX_session_expire")
+}
+
+model Suscription {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createAt  DateTime @default(now())
+  expiredAt Int
+  updatedAt DateTime @updatedAt
 }
 
 enum Role {

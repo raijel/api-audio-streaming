@@ -1,11 +1,11 @@
 import session from "express-session";
 import pgSession from "connect-pg-simple";
-import { SECRET_KEY, DATABASE_URL } from "../config";
+import { DISCORD_SECRET_KEY, DATABASE_URL } from "../config";
 
 const PgSession = pgSession(session);
 export const passportConfig = {
-  secret: SECRET_KEY,
-  name: "discord-oauth",
+  secret: DISCORD_SECRET_KEY,
+  name: "tokenDiscord",
   saveUninitialized: false,
   resave: false,
   store: new PgSession({
@@ -14,5 +14,7 @@ export const passportConfig = {
   }),
   cookie: {
     maxAge: 60000 * 60 * 24, // 1 day
+    secure: true,
+    httpOnly: true,
   },
 };

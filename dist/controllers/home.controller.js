@@ -8,21 +8,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.homePage = void 0;
-const prismaClient_1 = __importDefault(require("../utils/prismaClient"));
+const prismaClient_1 = require("../utils/prismaClient");
+const redis_1 = require("../utils/redis");
 const homePage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const songs = yield prismaClient_1.default.song.findMany();
-        if (songs.length === 0)
-            return res.status(200).json({ message: "There are not songs yet!" });
-        return res.status(200).json(songs);
+        const reply = yield redis_1.redisClient.get("videos");
+        if (reply)
+            return res.json(JSON.parse(reply));
+        const videos = yield prismaClient_1.prisma.video.findMany();
+        yield redis_1.redisClient.set("videos", JSON.stringify(videos));
+        yield redis_1.redisClient.expire("videos", 10);
+        if (videos.length === 0)
+            return res.status(200).json({ message: "There are not videos yet!" });
+        return res.json(videos);
     }
     catch (err) {
-        return res.status(500).json({ message: err.message });
+        return res.status(500).json({ message: "server error" });
     }
 });
 exports.homePage = homePage;
+//# sourceMappingURL=home.controller.js.map

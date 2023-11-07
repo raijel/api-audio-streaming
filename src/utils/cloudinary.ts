@@ -1,28 +1,32 @@
 import { v2 as cloudinary } from "cloudinary";
-import { API_KEY, API_SECRET, CLOUD_NAME } from "../config";
+import {
+  CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET,
+  CLOUDINARY_CLOUD_NAME,
+} from "../config";
 
 cloudinary.config({
-  cloud_name: CLOUD_NAME,
-  api_key: API_KEY,
-  api_secret: API_SECRET,
+  cloud_name: CLOUDINARY_CLOUD_NAME,
+  api_key: CLOUDINARY_API_KEY,
+  api_secret: CLOUDINARY_API_SECRET,
   secure: true,
 });
 
-export const uploadFile = async (tempFilePath: string) => {
+export const uploadFile = async (filePath: string) => {
   try {
-    return await cloudinary.uploader.upload(tempFilePath, {
-      folder: "audio files",
+    return await cloudinary.uploader.upload(filePath, {
+      folder: "videos_API",
       resource_type: "video",
     });
-  } catch (error) {
-    throw error;
+  } catch (err: any) {
+    console.log(`CLOUDINARY ERROR: ${err}`);
   }
 };
 
 export const deleteFile = async (publicId: string) => {
   try {
     return await cloudinary.uploader.destroy(publicId);
-  } catch (err) {
-    throw err;
+  } catch (err: any) {
+    console.log(`CLOUDINARY ERROR: ${err}`);
   }
 };

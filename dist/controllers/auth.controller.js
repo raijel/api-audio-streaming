@@ -9,3 +9,4 @@ const logOut = (req, res, next) => {
     });
 };
 exports.logOut = logOut;
+//# sourceMappingURL=auth.controller.js.map

@@ -1,10 +1,7 @@
 import { DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET } from "../config";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../utils/prismaClient";
 import passport from "passport";
-import { Strategy } from "passport-discord";
-import { Profile } from "passport-discord";
-
-const prisma = new PrismaClient();
+import { Strategy, Profile } from "passport-discord";
 
 passport.serializeUser((user: any, done) => {
   done(null, user.id);

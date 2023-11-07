@@ -5,3 +5,4 @@ const home_controller_1 = require("../controllers/home.controller");
 const router = (0, express_1.Router)();
 router.get("/home", home_controller_1.homePage);
 exports.default = router;
+//# sourceMappingURL=home.routes.js.map

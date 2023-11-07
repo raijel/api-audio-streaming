@@ -1,9 +1,11 @@
-import express, { Response, Request } from "express";
+import express, { Request, Response } from "express";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.routes";
 import homeRoutes from "./routes/home.routes";
-import audioRoutes from "./routes/audio.routes";
+import videoRoutes from "./routes/video.routes";
+import categoryRoutes from "./routes/category.routes";
+import paymentRoutes from "./routes/payment.routes";
 import "./strategies/discord.strategy";
 import session from "express-session";
 import passport from "passport";
@@ -23,8 +25,9 @@ app.use(passport.session());
 //ROUTES
 app.use("/auth", authRoutes);
 app.use("/api", homeRoutes);
-app.use("/api", audioRoutes);
-
+app.use("/api", videoRoutes);
+app.use("/api", categoryRoutes);
+app.use("/api", paymentRoutes);
 
 app.use((req: Request, res: Response) => {
   res.status(404).json({ message: "Page not found" });

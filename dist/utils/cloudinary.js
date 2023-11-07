@@ -9,24 +9,34 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadFile = void 0;
+exports.deleteFile = exports.uploadFile = void 0;
 const cloudinary_1 = require("cloudinary");
 const config_1 = require("../config");
 cloudinary_1.v2.config({
-    cloud_name: config_1.CLOUD_NAME,
-    api_key: config_1.API_KEY,
-    api_secret: config_1.API_SECRET,
+    cloud_name: config_1.CLOUDINARY_CLOUD_NAME,
+    api_key: config_1.CLOUDINARY_API_KEY,
+    api_secret: config_1.CLOUDINARY_API_SECRET,
     secure: true,
 });
-const uploadFile = (tempFilePath) => __awaiter(void 0, void 0, void 0, function* () {
+const uploadFile = (filePath) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        return yield cloudinary_1.v2.uploader.upload(tempFilePath, {
-            folder: "audio files",
-            resource_type: "auto",
+        return yield cloudinary_1.v2.uploader.upload(filePath, {
+            folder: "videos_API",
+            resource_type: "video",
         });
     }
-    catch (error) {
-        throw error;
+    catch (err) {
+        console.log(`CLOUDINARY ERROR: ${err}`);
     }
 });
 exports.uploadFile = uploadFile;
+const deleteFile = (publicId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        return yield cloudinary_1.v2.uploader.destroy(publicId);
+    }
+    catch (err) {
+        console.log(`CLOUDINARY ERROR: ${err}`);
+    }
+});
+exports.deleteFile = deleteFile;
+//# sourceMappingURL=cloudinary.js.map

@@ -16,3 +16,4 @@ router.get("/redirect", passport_1.default.authenticate("discord", {
 }));
 router.get("/logout", authValidator_middleware_1.authRequire, auth_controller_1.logOut);
 exports.default = router;
+//# sourceMappingURL=auth.routes.js.map

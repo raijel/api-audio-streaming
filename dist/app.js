@@ -8,7 +8,9 @@ const morgan_1 = __importDefault(require("morgan"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 const home_routes_1 = __importDefault(require("./routes/home.routes"));
-const audio_routes_1 = __importDefault(require("./routes/audio.routes"));
+const video_routes_1 = __importDefault(require("./routes/video.routes"));
+const category_routes_1 = __importDefault(require("./routes/category.routes"));
+const payment_routes_1 = __importDefault(require("./routes/payment.routes"));
 require("./strategies/discord.strategy");
 const express_session_1 = __importDefault(require("express-session"));
 const passport_1 = __importDefault(require("passport"));
@@ -25,8 +27,11 @@ app.use(passport_1.default.session());
 //ROUTES
 app.use("/auth", auth_routes_1.default);
 app.use("/api", home_routes_1.default);
-app.use("/api", audio_routes_1.default);
+app.use("/api", video_routes_1.default);
+app.use("/api", category_routes_1.default);
+app.use("/api", payment_routes_1.default);
 app.use((req, res) => {
     res.status(404).json({ message: "Page not found" });
 });
 exports.default = app;
+//# sourceMappingURL=app.js.map

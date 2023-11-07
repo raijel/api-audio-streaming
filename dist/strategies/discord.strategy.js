@@ -13,15 +13,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const config_1 = require("../config");
-const client_1 = require("@prisma/client");
+const prismaClient_1 = require("../utils/prismaClient");
 const passport_1 = __importDefault(require("passport"));
 const passport_discord_1 = require("passport-discord");
-const prisma = new client_1.PrismaClient();
 passport_1.default.serializeUser((user, done) => {
     done(null, user.id);
 });
 passport_1.default.deserializeUser((id, done) => __awaiter(void 0, void 0, void 0, function* () {
-    const userFound = yield prisma.user.findUnique({ where: { id: id } });
+    const userFound = yield prismaClient_1.prisma.user.findUnique({ where: { id: id } });
     done(null, userFound);
 }));
 passport_1.default.use(new passport_discord_1.Strategy({
@@ -33,12 +32,12 @@ passport_1.default.use(new passport_discord_1.Strategy({
     var _a;
     const guildId = (_a = profile.guilds) === null || _a === void 0 ? void 0 : _a.map((guild) => `id: ${guild.id}, name: ${guild.name}, icon: ${guild.icon}}`);
     try {
-        const userFound = yield prisma.user.findFirst({
+        const userFound = yield prismaClient_1.prisma.user.findFirst({
             where: { discordId: profile.id },
         });
         if (userFound)
             return done(null, userFound);
-        const newUser = yield prisma.user.create({
+        const newUser = yield prismaClient_1.prisma.user.create({
             data: {
                 discordId: profile.id,
                 username: profile.username,
@@ -52,3 +51,4 @@ passport_1.default.use(new passport_discord_1.Strategy({
         return done(err);
     }
 })));
+//# sourceMappingURL=discord.strategy.js.map

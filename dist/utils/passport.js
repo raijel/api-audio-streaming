@@ -9,8 +9,8 @@ const connect_pg_simple_1 = __importDefault(require("connect-pg-simple"));
 const config_1 = require("../config");
 const PgSession = (0, connect_pg_simple_1.default)(express_session_1.default);
 exports.passportConfig = {
-    secret: config_1.SECRET_KEY,
-    name: "discord-oauth",
+    secret: config_1.DISCORD_SECRET_KEY,
+    name: "tokenDiscord",
     saveUninitialized: false,
     resave: false,
     store: new PgSession({
@@ -18,6 +18,9 @@ exports.passportConfig = {
         conString: config_1.DATABASE_URL,
     }),
     cookie: {
-        maxAge: 60000 * 60 * 24, // 1 day
+        maxAge: 60000 * 60 * 24,
+        secure: true,
+        httpOnly: true,
     },
 };
+//# sourceMappingURL=passport.js.map
